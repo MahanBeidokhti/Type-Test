@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "helper_windows.h": "c",
+        "colorize.h": "c",
+        "stdlib.h": "c"
+    }
+}
