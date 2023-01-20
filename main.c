@@ -273,7 +273,7 @@ void fillhard()
                 word[i] = (rand_num % 26) + 65;
             }
             else
-            {
+            {شسیشسیش
                 // random hard charracters
                 char_selector = rand() % 7;
                 word[i] = chars[char_selector];
