@@ -2,6 +2,7 @@
 #include <time.h>
 #include <string.h>
 #include <malloc.h>
+#include <stdlib.h>
 #include "helper_windows.h"
 #include "colorize.h"
 
@@ -88,6 +89,7 @@ int main()
         random_number = rand() % 3;
         for (int i = 0; i < 10; i++)
         {
+<<<<<<< Updated upstream
             random_file_access = rand() % 10;
 
             for (int j = 0; j <= random_file_access; j++)
@@ -95,6 +97,56 @@ int main()
                 fscanf(fp, "%s\n", &word->text);
             }
 
+=======
+            word->next = NULL;
+            random_number = rand() % wave % 3;
+
+            switch (random_number)
+            {
+            case 0:
+            {
+                fp = fopen("words_easy.txt", "r");
+                break;
+            }
+            case 1:
+            {
+                fp = fopen("words_norm.txt", "r");
+                break;
+            }
+            case 2:
+            {
+                fp = fopen("words_hard.txt", "r");
+                break;
+            }
+            }
+            random_file_access = rand() % 10;
+            for (int j = 0; j <= random_file_access; j++)
+            {
+                word->text[0] = 1;
+                for (int k = 0; word->text[k] != '\n'; k++)
+                {
+                    word->text[k] = getc(fp);
+                    printf("%c", word->text[k]);
+                }
+                printf("\n");
+                Sleep(1000);
+            }
+            fclose(fp);
+
+            if (i == 0)
+            {
+                head = word;
+            }
+            else
+            {
+                temp_head = head;
+                for (int j = 0; j < i; j++)
+                {
+                    temp_head = temp_head->next;
+                }
+                temp_head->next = word;
+            }
+>>>>>>> Stashed changes
             fseek(fp, 0, SEEK_SET);
             Sleep(1000);
         }
