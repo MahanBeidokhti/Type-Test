@@ -19,16 +19,21 @@ typedef struct user
 
 typedef struct Node
 {
-    char text[20];
+    char *text;
     struct Node *next;
 } Node;
 
+<<<<<<< Updated upstream
+=======
+void push(char *data);
+>>>>>>> Stashed changes
 void filleasy();
 void fillnorm();
 void fillhard();
 void border(int x, int y);
 int log_reg();
 
+<<<<<<< Updated upstream
 int main()
 {
     FILE *fp;
@@ -37,6 +42,29 @@ int main()
     float total_time, time_limit, time_per_wave;
     word = calloc(1, sizeof(Node));
     words = calloc(1, sizeof(Node *));
+=======
+Node *head = NULL, *tale = NULL;
+int flag = 0, list_size = 0;
+
+int main()
+{
+    FILE *fp;
+    Node *temp;
+    char *str;
+    int level = 0, score, random_file_access, random_number, wave;
+    float total_time, time_limit, time_per_wave;
+
+    head = malloc(sizeof(Node));
+    tale = malloc(sizeof(Node));
+    temp = calloc(1, sizeof(Node));
+    temp->text = calloc(20, sizeof(char));
+    str = calloc(20, sizeof(char));
+
+    head->text = NULL;
+    head->next = NULL;
+    tale->text = NULL;
+    tale->next = NULL;
+>>>>>>> Stashed changes
 
     srand(time(NULL));
     filleasy();
@@ -81,13 +109,22 @@ int main()
         break;
     }
 
+<<<<<<< Updated upstream
     fp = fopen("words_easy.txt", "r");
 
     for (int wave = 0; time >= 1; wave++)
+=======
+    system("cls");
+    border(40, 22);
+    // HANDLE thread_id = start_listening(my_callback_on_key_arrival);
+
+    for (wave = 1; time_limit > 1; wave++)
+>>>>>>> Stashed changes
     {
         random_number = rand() % 3;
         for (int i = 0; i < 10; i++)
         {
+<<<<<<< Updated upstream
             random_file_access = rand() % 10;
 
             for (int j = 0; j <= random_file_access; j++)
@@ -98,6 +135,61 @@ int main()
             fseek(fp, 0, SEEK_SET);
             Sleep(1000);
         }
+=======
+            random_number = rand() % wave % 3;
+            switch (random_number)
+            {
+            case 0:
+                fp = fopen("words_easy.txt", "r");
+                break;
+
+            case 1:
+                fp = fopen("words_norm.txt", "r");
+                break;
+
+            case 2:
+                fp = fopen("words_hard.txt", "r");
+                break;
+            }
+            random_file_access = rand() % 50;
+            for (int j = 0; j <= random_file_access; j++)
+            {
+                fscanf(fp, " %s", str);
+            }
+
+            // printf("%s\n", str);
+
+            push(str);
+        }
+
+        for (int l = 0; l < 10; l++)
+        {
+            for (int k = 0; k <= l; k++)
+            {
+
+                if (flag == 1)
+                {
+                    flag = 2;
+                    temp = head;
+                }
+                else
+                {
+                    temp = temp->next;
+                }
+                gotoxy(20 - (strlen(temp->text) / 2), 2 * (l - k) + 1);
+                printf("%s\n", temp->text);
+            }
+            Sleep(100 * time_limit);
+            system("cls");
+            border(40, 22);
+            flag = 1;
+        }
+
+        time_limit = time_limit * (1 - time_per_wave);
+        filleasy();
+        fillnorm();
+        fillhard();
+>>>>>>> Stashed changes
     }
 
     // HANDLE thread_id = start_listening(my_callback_on_key_arrival);
@@ -107,6 +199,33 @@ int main()
     return 0;
 }
 
+<<<<<<< Updated upstream
+=======
+void push(char *data)
+{
+    Node *temp;
+    temp = (Node *)malloc(sizeof(Node));
+    temp->text = (char *)calloc(20, sizeof(char));
+    temp->next = NULL;
+    strcpy(temp->text, data);
+
+    if (flag == 0)
+    {
+        head = temp;
+        tale = temp;
+        flag = 1;
+        list_size = 1;
+    }
+    else
+    {
+        tale->next = temp;
+        list_size++;
+    }
+    tale = temp;
+    return;
+}
+
+>>>>>>> Stashed changes
 void filleasy()
 {
     FILE *fp;
@@ -246,6 +365,211 @@ void border(int x, int y)
 }
 
 int log_reg()
+<<<<<<< Updated upstream
+=======
+{
+    FILE *fp;
+    user *input_user, *temp;
+    int choose, wrong_password = 0, flag = 0;
+    input_user = calloc(1, sizeof(user));
+    temp = calloc(1, sizeof(user));
+
+    setcolor(3);
+    border(32, 15);
+    setcolor(8);
+    gotoxy(5, 2);
+    setcolor(2);
+    printf("Login/SignIn Please...");
+    gotoxy(5, 5);
+    printf("1. login\n");
+    gotoxy(5, 7);
+    printf("2. register\n");
+    setcolor(8);
+    gotoxy(5, 10);
+    scanf("%d", &choose);
+    system("cls");
+    setcolor(3);
+    border(50, 15);
+    setcolor(8);
+    if (choose == 1)
+    {
+        fp = fopen("users.txt", "r");
+
+        gotoxy(5, 5);
+        printf("enter your username : ");
+        scanf(" %s", temp->username);
+
+        while (flag != 1)
+        {
+            if (flag == 2)
+            {
+                system("cls");
+                setcolor(3);
+                border(50, 15);
+                setcolor(8);
+                gotoxy(5, 5);
+                printf("enter your username : ");
+                gotoxy(5, 2);
+                setcolor(12);
+                printf("there is no user with this username!");
+                gotoxy(5, 3);
+                printf("Please Check your username and try again...");
+                setcolor(8);
+                gotoxy(27, 5);
+                scanf(" %s", temp->username);
+                fseek(fp, 0, SEEK_SET);
+            }
+
+            while (fread(input_user, sizeof(user) + sizeof(char), 1, fp))
+            {
+                if (!strcmp(input_user->username, temp->username))
+                {
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if (flag == 1)
+            {
+                gotoxy(5, 7);
+                printf("enter your password : ");
+                continue;
+            }
+
+            flag = 2;
+        }
+
+        scanf(" %s", temp->password);
+
+        while (strcmp(temp->password, input_user->password))
+        {
+            system("cls");
+            gotoxy(5, 5);
+            printf("enter your username : %s", temp->username);
+            setcolor(3);
+            border(50, 15);
+            setcolor(8);
+            gotoxy(5, 2);
+            setcolor(12);
+            printf("password doesen't match.");
+            gotoxy(5, 3);
+            printf("please try again!");
+            setcolor(8);
+            gotoxy(5, 7);
+            printf("enter your password : ");
+
+            wrong_password++;
+            scanf(" %s", temp->password);
+            if (wrong_password > 9)
+            {
+                setcolor(12);
+                printf("you tried many times. please try again\n");
+                setcolor(8);
+                Sleep(4000);
+                system("cls");
+                return 0;
+            }
+        }
+
+        gotoxy(5, 11);
+        setcolor(2);
+        printf("welcome %s!", input_user->nickname);
+        setcolor(8);
+        Sleep(2000);
+        fclose(fp);
+        return 1;
+    }
+
+    else if (choose == 2)
+    {
+        fp = fopen("users.txt", "r");
+
+        gotoxy(5, 5);
+        printf("choose a username : ");
+        scanf(" %s", temp->username);
+
+        while (fread(input_user, sizeof(user) + sizeof(char), 1, fp))
+            if (!strcmp(input_user->username, temp->username))
+            {
+                system("cls");
+                setcolor(3);
+                border(50, 15);
+                setcolor(8);
+                gotoxy(5, 2);
+                setcolor(12);
+                printf("this username has already been taken!");
+                gotoxy(5, 3);
+                printf("try another one!");
+                setcolor(8);
+                gotoxy(5, 5);
+                printf("choose a username : ");
+                fseek(fp, 0, SEEK_SET);
+                scanf(" %s", temp->username);
+            }
+        system("cls");
+        setcolor(3);
+        border(55, 19);
+        setcolor(8);
+        gotoxy(5, 5);
+        printf("choose a username : %s", temp->username);
+
+        gotoxy(5, 7);
+        printf("choose a password : ");
+        scanf(" %s", temp->password);
+
+        gotoxy(5, 9);
+        printf("what's your first name : ");
+        scanf(" %s", temp->nickname);
+
+        gotoxy(5, 11);
+        printf("and you last name : ");
+        scanf(" %s", temp->lastname);
+
+        gotoxy(5, 13);
+        printf("How old are you : ");
+        scanf(" %s", &temp->age);
+
+        temp->firstscore = '0';
+        temp->firstlevel = '0';
+        temp->firsttime = '0';
+        temp->secondscore = '0';
+        temp->secondlevel = '0';
+        temp->secondtime = '0';
+        temp->thirdscore = '0';
+        temp->thirdlevel = '0';
+        temp->thirdtime = '0';
+
+        gotoxy(23, 2);
+        setcolor(2);
+        printf("WELCOME!");
+        setcolor(8);
+        gotoxy(5, 16);
+        printf("Ok done.Now you can login to your account! ");
+        Sleep(4000);
+        fclose(fp);
+
+        fp = fopen("users.txt", "a");
+
+        fwrite(temp, sizeof(user), 1, fp);
+        fputc('\n', fp);
+        fclose(fp);
+        system("cls");
+        return 0;
+    }
+
+    else
+    {
+        gotoxy(5, 5);
+        printf("Somthing happend. please try again.");
+        Sleep("5000");
+        system("cls");
+        system("cls");
+        return 0;
+    }
+}
+
+void my_callback_on_key_arrival(char c)
+>>>>>>> Stashed changes
 {
     FILE *fp;
     user *input_user, *temp;
