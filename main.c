@@ -31,14 +31,14 @@ void border(int x, int y);
 int log_reg();
 
 Node *head = NULL, *tale = NULL;
-int flag = 0, list_size = 0;
+int flag = 0, flag2 = 0, list_size = 0, word_size, word_it = 0, l, k;
 
 int main()
 {
     FILE *fp;
     Node *temp;
     char *str;
-    int level = 0, score, random_file_access, random_number, wave;
+    int level = 0, score, random_file_access, random_number, wave = 1;
     float total_time, time_limit, time_per_wave;
 
     head = malloc(sizeof(Node));
@@ -99,65 +99,80 @@ int main()
     border(40, 22);
     // HANDLE thread_id = start_listening(my_callback_on_key_arrival);
 
-    for (wave = 1; time_limit > 1; wave++)
+    for (int i = 0; i < 10; i++)
     {
-        random_number = rand() % 3;
-        for (int i = 0; i < 10; i++)
+        fp = fopen("words_easy.txt", "r");
+
+        random_file_access = rand() % 50;
+        for (int j = 0; j <= random_file_access; j++)
         {
-
-            random_number = rand() % wave % 3;
-            switch (random_number)
-            {
-            case 0:
-                fp = fopen("words_easy.txt", "r");
-                break;
-
-            case 1:
-                fp = fopen("words_norm.txt", "r");
-                break;
-
-            case 2:
-                fp = fopen("words_hard.txt", "r");
-                break;
-            }
-            random_file_access = rand() % 50;
-            for (int j = 0; j <= random_file_access; j++)
-            {
-                fscanf(fp, " %s", str);
-            }
-
-            // printf("%s\n", str);
-
-            push(str);
+            fscanf(fp, " %s", str);
         }
 
-        for (int l = 0; l < 10; l++)
-        {
-            for (int k = 0; k <= l; k++)
-            {
+        push(str);
+        fclose(fp);
+    }
 
-                if (flag == 1)
-                {
-                    flag = 2;
-                    temp = head;
-                }
-                else
-                {
-                    temp = temp->next;
-                }
-                gotoxy(20 - (strlen(temp->text) / 2), 2 * (l - k) + 1);
-                printf("%s\n", temp->text);
+    while (word_it <= 10 && time_limit >= 1)
+    {
+
+        for (int counter = 0; counter < word_it; counter++)
+        {
+
+            if (flag == 1)
+            {
+                flag = 2;
+                temp = head;
             }
-            Sleep(100 * time_limit);
-            system("cls");
-            border(40, 22);
-            flag = 1;
+            else
+            {
+                temp = temp->next;
+            }
+            gotoxy(20 - (strlen(temp->text) / 2), 2 * (word_it - counter));
+            printf("%s\n", temp->text);
         }
 
-        time_limit = time_limit * (1 - time_per_wave);
-        filleasy();
-        fillnorm();
-        fillhard();
+        Sleep(100 * time_limit);
+        system("cls");
+        border(40, 22);
+        word_it++;
+        list_size++;
+
+        // list_size نباید هیچ جا منها بشه که بدونیم در مجموع چند تا کلمه اومده پایین
+        // list_size ---------> count of printed words
+        if (list_size % 10 == 0)
+        {
+            wave++;
+            random_number = rand() % 3;
+            for (int i = 0; i < 10; i++)
+            {
+
+                random_number = rand() % wave % 3;
+                switch (random_number)
+                {
+                case 0:
+                    fp = fopen("words_easy.txt", "r");
+                    break;
+
+                case 1:
+                    fp = fopen("words_norm.txt", "r");
+                    break;
+
+                case 2:
+                    fp = fopen("words_hard.txt", "r");
+                    break;
+                }
+                random_file_access = rand() % 50;
+                for (int j = 0; j <= random_file_access; j++)
+                {
+                    fscanf(fp, " %s", str);
+                }
+
+                push(str);
+            }
+            time_limit = time_limit * (1 - time_per_wave);
+        }
+        flag = 1;
     }
 
     // HANDLE thread_id = start_listening(my_callback_on_key_arrival);
@@ -178,14 +193,11 @@ void push(char *data)
     if (flag == 0)
     {
         head = temp;
-        tale = temp;
         flag = 1;
-        list_size = 1;
     }
     else
     {
         tale->next = temp;
-        list_size++;
     }
     tale = temp;
     return;
@@ -533,4 +545,22 @@ int log_reg()
 
 void my_callback_on_key_arrival(char c)
 {
+    if (flag2 == 0)
+    {
+        word_size = strlen(head->text);
+        word_it = 0;
+        flag2 = 1;
+    }
+    if (c == head->text[word_it])
+    {
+    }
+    else
+    {
+    }
+    word_it++;
+    if (word_size == word_it)
+    {
+        head = head->next;
+        flag2 = 0;
+    }
 }
